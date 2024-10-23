@@ -1,0 +1,19 @@
+{
+  "name": "mysms-2.0.app",
+  "version": "1.0.0",
+  "description": "MySMS Server side code developed by Ashley de Belen and AAMLO IT Department",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon app/server.js"
+  },
+  "author": "Ashley de Belen and AAMLO IT Department",
+  "license": "ISC",
+  "dependencies": {
+    "asterisk-manager": "^0.2.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
+    "nodemon": "^3.1.7",
+    "pg": "^8.13.0"
+  }
+}
