@@ -4,7 +4,7 @@ const { Pool } = pkg;
 
 const pool = new Pool({
   user: "abdebelenm",
-  host: "localhost",
+  host: "192.168.5.237",
   database: "my_sms",
   password: "root",
   port: 5432,
