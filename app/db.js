@@ -4,7 +4,7 @@ const { Pool } = pkg;
 
 const pool = new Pool({
   user: "abdebelenm",
-  host: "192.168.5.237",
+  host: "localhost",
   database: "my_sms",
   password: "root",
   port: 5432,
@@ -14,8 +14,8 @@ const initializeDatabase = async () => {
   const createUserTable = `
     CREATE TABLE IF NOT EXISTS Users (
         user_id SERIAL PRIMARY KEY,
-        username VARCHAR(100) NOT NULL,
-        password VARCHAR(100) NOT NULL,
+        username VARCHAR(25) NOT NULL,
+        password VARCHAR(75) NOT NULL,
         authority BOOLEAN NOT NULL DEFAULT FALSE
     );`;
 

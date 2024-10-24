@@ -9,6 +9,6 @@ router.post("/send", messageControllers.sendSingleMessage);
 router.delete("/delete/:id", messageControllers.deleteMessageById);
 
 // ONLY ENABLE THIS CODE WHEN DELETING MESSAGES.
-// router.delete("/delete-all", messageControllers.deleteAllMessages);
+// router.delete("/admin/delete-all", messageControllers.deleteAllMessages);
 
 export default router;

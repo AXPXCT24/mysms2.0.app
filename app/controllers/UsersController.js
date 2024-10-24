@@ -1,4 +1,5 @@
 import pool from "../db.js";
+import bcrypt from "bcrypt";
 
 export const getAllUsers = async (req, res) => {
   try {
@@ -69,11 +70,14 @@ export const createUser = async (req, res) => {
   }
 
   try {
+    const hashedPassword = await bcrypt.hash(password, 6);
+
     const result = await pool.query(
-      "INSERT INTO Users (username, password) VALUES ($1, $2) RETURNING *",
-      [username, password]
+      "INSERT INTO Users (username, password) VALUES ($1, $2) RETURNING username",
+      [username, hashedPassword]
     );
-    res.status(201).json(result.rows[0]);
+
+    res.status(201).json(result.rows);
   } catch (error) {
     console.error("Error creating user:", error);
     if (error.code === "23505") {
