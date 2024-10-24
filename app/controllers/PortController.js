@@ -1,4 +1,4 @@
-import pool from "../db";
+import pool from "../db.js";
 
 export const getGsmPorts = async (req, res) => {
   try {
@@ -41,7 +41,7 @@ export const registerPort = async (req, res) => {
 
   try {
     const result = await pool.query(
-      "INSERT INTO port (gsm_number, number) VALUES ($1, $2) RETURNING *",
+      "INSERT INTO port (gsm_number, sim_number) VALUES ($1, $2) RETURNING *",
       [gsm_number, number]
     );
     res.status(201).json(result.rows[0]);
@@ -53,16 +53,16 @@ export const registerPort = async (req, res) => {
 
 export const updatePortDetails = async (req, res) => {
   const { number } = req.body;
-  const { id } = req.params;
+  const { gsm_number } = req.params;
 
-  if (!id || isNaN(id)) {
+  if (!gsm_number || isNaN(gsm_number)) {
     return res.status(400).json({ error: "Invalid or missing port ID" });
   }
 
   try {
     const result = await pool.query(
       "UPDATE port SET sim_number = $2 WHERE gsm_number = $1 RETURNING *",
-      [id, number]
+      [gsm_number, number]
     );
     if (result.rows.length === 0) {
       return res.status(404).json({ error: "Port not found" });
@@ -75,14 +75,14 @@ export const updatePortDetails = async (req, res) => {
 };
 
 export const deletePortById = async (req, res) => {
-  const { id } = req.params;
+  const { gsm_number } = req.params;
 
-  if (!id || isNaN(id)) {
+  if (!gsm_number || isNaN(gsm_number)) {
     return res.status(400).json({ error: "Invalid or missing port ID" });
   }
   try {
     const result = await pool.query("DELETE FROM port WHERE gsm_number = $1", [
-      id,
+      gsm_number,
     ]);
     if (result.rowCount === 0) {
       return res.status(404).json({ error: "Port not found" });
@@ -93,3 +93,13 @@ export const deletePortById = async (req, res) => {
     res.status(500).json({ error: "Failed to delete port" });
   }
 };
+
+// export const deleteAllPorts = async (req, res) => {
+//   try {
+//     await pool.query("DELETE FROM port");
+//     res.status(204).send();
+//   } catch (error) {
+//     console.error("Error deleting all ports:", error);
+//     res.status(500).json({ error: "Failed to delete all ports" });
+//   }
+// };

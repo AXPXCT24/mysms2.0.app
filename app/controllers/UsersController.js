@@ -32,33 +32,33 @@ export const getUserById = async (req, res) => {
   }
 };
 
-// export const editUserDetails = async (req, res) => {
-//   const { user_id } = req.params;
-//   const { username, password } = req.body;
+export const editUserDetails = async (req, res) => {
+  const { user_id } = req.params;
+  const { username, password } = req.body;
 
-//   if (!user_id || isNaN(user_id)) {
-//     return res.status(400).json({ error: "Invalid or missing user ID" });
-//   }
+  if (!user_id || isNaN(user_id)) {
+    return res.status(400).json({ error: "Invalid or missing user ID" });
+  }
 
-//   if (!username || !password) {
-//     return res
-//       .status(400)
-//       .json({ error: "Invalid or missing username or password" });
-//   }
-//   try {
-//     const result = await pool.query(
-//       "UPDATE Users SET username = $1, password = $2 WHERE user_id = $3 RETURNING *",
-//       [username, password, user_id]
-//     );
-//     if (result.rows.length === 0) {
-//       return res.status(404).json({ error: "User not found" });
-//     }
-//     res.status(200).json(result.rows[0]);
-//   } catch (e) {
-//     console.error("Error updating user details:", e);
-//     res.status(500).json({ error: "Failed to update user details" });
-//   }
-// };
+  if (!username || !password) {
+    return res
+      .status(400)
+      .json({ error: "Invalid or missing username or password" });
+  }
+  try {
+    const result = await pool.query(
+      "UPDATE Users SET username = $1, password = $2 WHERE user_id = $3 RETURNING *",
+      [username, password, user_id]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.status(200).json(result.rows[0]);
+  } catch (e) {
+    console.error("Error updating user details:", e);
+    res.status(500).json({ error: "Failed to update user details" });
+  }
+};
 
 export const createUser = async (req, res) => {
   const { username, password } = req.body;

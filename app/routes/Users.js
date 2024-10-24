@@ -13,5 +13,6 @@ router.post("/create-user", usersController.createUser);
 // router.put("/edit-user/:user_id", usersController.editUserDetails);
 
 router.delete("/delete-user/:user_id", usersController.deleteUserById);
+// router.delete("/admin/delete-all", usersController.deleteUsers);
 
 export default router;
