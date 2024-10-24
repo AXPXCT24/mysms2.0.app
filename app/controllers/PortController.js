@@ -32,6 +32,48 @@ export const getGsmPortById = async (req, res) => {
   }
 };
 
+export const registerPort = async (req, res) => {
+  const { gsm_number, number } = req.body;
+
+  if (!gsm_number || !number) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
+  try {
+    const result = await pool.query(
+      "INSERT INTO port (gsm_number, number) VALUES ($1, $2) RETURNING *",
+      [gsm_number, number]
+    );
+    res.status(201).json(result.rows[0]);
+  } catch (error) {
+    console.error("Error registering port:", error);
+    res.status(500).json({ error: "Failed to register port" });
+  }
+};
+
+export const updatePortDetails = async (req, res) => {
+  const { number } = req.body;
+  const { id } = req.params;
+
+  if (!id || isNaN(id)) {
+    return res.status(400).json({ error: "Invalid or missing port ID" });
+  }
+
+  try {
+    const result = await pool.query(
+      "UPDATE port SET sim_number = $2 WHERE gsm_number = $1 RETURNING *",
+      [id, number]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Port not found" });
+    }
+    res.status(200).json({ response: result.rows[0] });
+  } catch (error) {
+    console.error("Error updating port:", error);
+    res.status(500).json({ error: "Failed to update port" });
+  }
+};
+
 export const deletePortById = async (req, res) => {
   const { id } = req.params;
 
@@ -49,24 +91,5 @@ export const deletePortById = async (req, res) => {
   } catch (error) {
     console.error("Error deleting port:", error);
     res.status(500).json({ error: "Failed to delete port" });
-  }
-};
-
-export const registerPort = async (req, res) => {
-  const { gsm_number, number } = req.body;
-
-  if (!gsm_number || !number) {
-    return res.status(400).json({ error: "Missing required fields" });
-  }
-
-  try {
-    const result = await pool.query(
-      "INSERT INTO port (gsm_number, number) VALUES ($1, $2) RETURNING *",
-      [gsm_number, number]
-    );
-    res.status(201).json(result.rows[0]);
-  } catch (error) {
-    console.error("Error registering port:", error);
-    res.status(500).json({ error: "Failed to register port" });
   }
 };
