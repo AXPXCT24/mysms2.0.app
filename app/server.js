@@ -5,7 +5,7 @@ import cors from "cors";
 import { responseListener } from "./utils/ami.js";
 
 const app = express();
-const port = 3002;
+const port = 4000;
 
 const amiPort = 5038;
 const amiHost = "192.168.1.31";
