@@ -3,11 +3,11 @@ import { smsSender } from "../utils/ami.js";
 import { validateClient } from "./ClientController.js";
 
 export const getMessages = async (req, res) => {
-  const { filter, params } = req.query;
+  const { filter, params, limit } = req.query;
 
   try {
     const result = await pool.query(
-      `SELECT * FROM Messages WHERE ${filter} = $1`,
+      `SELECT * FROM Messages WHERE ${filter} = $1 LIMIT ${limit}`,
       [params]
     );
     res.status(200).json(result.rows);
@@ -58,7 +58,7 @@ export const sendSingleMessage = async (req, res) => {
         ["Outgoing", message, gsm_number, number]
       );
       res.status(200).json({
-        response: "Text message successfully inserted to database.",
+        response: "Success",
         message: "Text message successfully sent to the client.",
       });
     }

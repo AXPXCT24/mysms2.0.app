@@ -5,7 +5,7 @@ import cors from "cors";
 import { responseListener } from "./utils/ami.js";
 
 const app = express();
-const port = 4000;
+const port = 42069;
 
 const amiPort = 5038;
 const amiHost = "192.168.1.31";
@@ -23,6 +23,14 @@ export const ami = new asteriskManager(
 ami.keepConnected();
 
 responseListener();
+
+app.post("/show-gsm", (req, res) => {
+  ami.action({
+    action: "smscommand",
+    command: `gsm show spans`,
+  });
+  res.status(200).json({ message: "Command sent" });
+});
 
 app.use(express.json({ limit: "30mb" }));
 
